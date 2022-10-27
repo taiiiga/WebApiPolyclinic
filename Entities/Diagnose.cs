@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApiPolyclinic.Entities;
 
-public class Analyze
+public class Diagnose
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int? Id { get; set; }
-    public string? Name { get; set; }
     public string? Description { get; set; }
-    public string? Result { get; set; }
-    public int? PatientId { get; set; }
+    public string? Diagnosis { get; set; }
+    public DateTime? DateTime { get; set; }
+    public int? RecordId { get; set; }
 }

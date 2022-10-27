@@ -8,23 +8,23 @@ namespace WebApiPolyclinic.Controllers;
 [EnableCors("AllowOrigin")]
 [ApiController]
 [Route("api/[controller]")]
-public class AnalyzeController : Controller
+public class DiagnoseController : Controller
 {
     private readonly AppDbContext _db;
 
-    public AnalyzeController(AppDbContext db)
+    public DiagnoseController(AppDbContext db)
     {
         _db = db;
     }
     
     [HttpGet("list")]
-    public IActionResult List()
+    public IActionResult List(int id)
     {
         try
         {
-            var analyzes = _db.Analyzes.ToList();
+            var diagnoses = _db.Diagnoses.Where(x => x.RecordId == id).ToList();
         
-            return Json(analyzes);
+            return Json(diagnoses);
         }
         catch (Exception e)
         {
@@ -38,9 +38,9 @@ public class AnalyzeController : Controller
     {
         try
         {
-            var analyze = _db.Analyzes.First(x => x.Id == id);
+            var diagnose = _db.Diagnoses.First(x => x.Id == id);
 
-            return Json(analyze);
+            return Json(diagnose);
         }
         catch (Exception e)
         {
@@ -50,18 +50,18 @@ public class AnalyzeController : Controller
     }
     
     [HttpPost("delete/{id}")]
-    public IActionResult Delete(int id, string email, string password)
+    public IActionResult Delete(string email, string password, int id)
     {
         try
         {
             if (GetUser(email, password) == null)
-                return Unauthorized(); 
-        
-            var analyze = _db.Analyzes.First(x => x.Id == id);
-            _db.Analyzes.Remove(analyze);
+                return Unauthorized();
+
+            var diagnose = _db.Diagnoses.First(x => x.Id == id);
+            var result = _db.Diagnoses.Remove(diagnose);
             _db.SaveChanges();
-        
-            return Json(true);
+
+            return Json(result);
         }
         catch (Exception e)
         {
@@ -71,17 +71,14 @@ public class AnalyzeController : Controller
     }
     
     [HttpPost("create")]
-    public IActionResult Create(string email, string password, [FromBody] Analyze analyze)
+    public IActionResult Create([FromBody] Diagnose diagnose)
     {
         try
         {
-            if (GetUser(email, password) == null)
-                return Unauthorized();
-
-            _db.Analyzes.Add(analyze);
+            var result = _db.Diagnoses.Add(diagnose);
             _db.SaveChanges();
-        
-            return Json(true);
+
+            return Json(result.Entity);
         }
         catch (Exception e)
         {
@@ -91,17 +88,17 @@ public class AnalyzeController : Controller
     }
     
     [HttpPost("update")]
-    public IActionResult Update(string email, string password, [FromBody] Analyze analyze)
+    public IActionResult Update(string email, string password, [FromBody] Diagnose diagnose)
     {
         try
         {
             if (GetUser(email, password) == null)
                 return Unauthorized();
-        
-            _db.Analyzes.Update(analyze);
+
+            var result = _db.Diagnoses.Update(diagnose);
             _db.SaveChanges();
-        
-            return Json(true);
+
+            return Json(result.Entity);
         }
         catch (Exception e)
         {

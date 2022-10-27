@@ -24,62 +24,130 @@ namespace WebApiPolyclinic.Migrations
 
             modelBuilder.Entity("WebApiPolyclinic.Entities.Analyze", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("PatientId")
+                    b.Property<int?>("PatientId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Result")
-                        .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.ToTable("Analyzes");
                 });
 
-            modelBuilder.Entity("WebApiPolyclinic.Entities.Role", b =>
+            modelBuilder.Entity("WebApiPolyclinic.Entities.Diagnose", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int?>("Id"));
+
+                    b.Property<DateTime?>("DateTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Diagnosis")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("RecordId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Diagnoses");
+                });
+
+            modelBuilder.Entity("WebApiPolyclinic.Entities.Doctor", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int?>("Id"));
+
+                    b.Property<byte?>("Experiance")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("Specialization")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("UserId")
+                        .IsRequired()
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Doctors");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Experiance = (byte)0,
+                            Specialization = "Хирург",
+                            UserId = 13
+                        });
+                });
+
+            modelBuilder.Entity("WebApiPolyclinic.Entities.Record", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int?>("Id"));
+
+                    b.Property<int?>("ClientId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int?>("DoctorId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("text");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Time")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Records");
+                });
+
+            modelBuilder.Entity("WebApiPolyclinic.Entities.Role", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -106,235 +174,113 @@ namespace WebApiPolyclinic.Migrations
 
             modelBuilder.Entity("WebApiPolyclinic.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int?>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
+                    b.Property<string>("City")
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
-                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
                         .HasColumnType("text");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer");
+                    b.Property<string>("Phone")
+                        .HasColumnType("text");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("Photo")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("RoleId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
-
-                    b.UseTphMappingStrategy();
-
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = 0,
-                            DeletedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            City = "",
                             Email = "admin@mail.com",
+                            FirstName = "",
+                            LastName = "",
                             Password = "admin",
-                            RoleId = 1,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            Phone = "",
+                            Photo = "",
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = 0,
-                            DeletedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            City = "",
                             Email = "client@mail.com",
+                            FirstName = "",
+                            LastName = "",
                             Password = "client",
-                            RoleId = 2,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            Phone = "",
+                            Photo = "",
+                            RoleId = 2
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = 0,
-                            DeletedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            City = "",
                             Email = "doctor@mail.com",
+                            FirstName = "",
+                            LastName = "",
                             Password = "doctor",
-                            RoleId = 3,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            Phone = "",
+                            Photo = "",
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            Id = 11,
+                            City = "",
+                            Email = "admin@gmail.com",
+                            FirstName = "Админ",
+                            LastName = "Админов",
+                            Password = "admin",
+                            Phone = "",
+                            Photo = "",
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 12,
+                            City = "",
+                            Email = "vanov@gmail.com",
+                            FirstName = "Ваня",
+                            LastName = "Ванов",
+                            Password = "123456",
+                            Phone = "+79443453535",
+                            Photo = "",
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 13,
+                            City = "",
+                            Email = "ivan@gmail.com",
+                            FirstName = "Иван",
+                            LastName = "Иванов",
+                            Password = "123456",
+                            Phone = "+79443453534",
+                            Photo = "",
+                            RoleId = 3
                         });
-                });
-
-            modelBuilder.Entity("WebApiPolyclinic.Entities.Client", b =>
-                {
-                    b.HasBaseType("WebApiPolyclinic.Entities.User");
-
-                    b.HasDiscriminator().HasValue("Client");
-                });
-
-            modelBuilder.Entity("WebApiPolyclinic.Entities.Doctor", b =>
-                {
-                    b.HasBaseType("WebApiPolyclinic.Entities.User");
-
-                    b.Property<string>("AdditionalInformation")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Appointment")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Awards")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Education")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Experience")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Facebook")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Fees")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("GooglePlus")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Instagram")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Insurance")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Languages")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Linkedin")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Membership")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Patronymic")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Payment")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Photo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Services")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Skype")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Specialization")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Surname")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Twitter")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Website")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("WorkExperience")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("WorkingDays")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("WorkingHours")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Youtube")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ZipCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasDiscriminator().HasValue("Doctor");
                 });
 #pragma warning restore 612, 618
         }
